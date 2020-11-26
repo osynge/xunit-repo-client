@@ -9,4 +9,4 @@ edition = "2018"
 [dependencies]
 glob = "*"
 thiserror = "*"
-xunit-repo-interface = { path = "../xunit-repo-interface" }
+xunit-repo-interface = { git = "https://github.com/osynge/xunit-repo-interface.git", branch = "main" }
