@@ -1,34 +1,20 @@
 use glob::glob;
 use xunit_repo_interface;
+mod clap_fern;
+mod cli_clap;
+mod config;
+mod error;
 mod into;
+mod parse_glob;
+mod upload;
 
 fn main() {
-    for entry in glob("xml/*.xml").expect("Failed to read glob pattern") {
-        let f = match entry {
-            Ok(path) => {
-                println!("{:?}", path);
-                into::try_into(path)
-            },
-            Err(e) => {println!("{:?}", e); continue;},
-        };
-        match f {
-            Ok(p) => {println!("{:?}", p)},
-            Err(p) => {println!("{:?}", p)},
-        };
+    let cfg = cli_clap::cli_clap();
+    clap_fern::log_setup(&cfg);
 
-    }
-}
-
-
-fn ssmain() {
-    for entry in glob("/home/oms101/home/programming/github/xunit-repo-client/xml/*").expect("Failed to read glob pattern") {
-        let f = match entry {
-            Ok(path) => {
-                into::try_into(path)
-            },
-            Err(e) => {println!("{:?}", e); continue;},
-        };
-        match f {Ok(p) => {println!("{:?}", p)},
-    Err(_) => {}}
-    }
+    let _output = parse_glob::load_globs(&cfg.xunit_local_globs);
+    println!("{:#?}", _output);
+    let host = cfg.server_host.expect("Hostname not set");
+    let port = cfg.server_port.expect("Port not set");
+    upload::upload(&host, &port);
 }
