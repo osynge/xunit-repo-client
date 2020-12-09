@@ -1,4 +1,4 @@
-pub struct config {
+pub struct Config {
     pub configfile: Option<String>,
     pub loglevel: Option<i8>,
     pub xunit_local_globs: Vec<String>,

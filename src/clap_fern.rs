@@ -4,7 +4,7 @@ use fern;
 use log;
 use std;
 
-pub fn log_setup(config: &crate::config::config) -> () {
+pub fn log_setup(config: &crate::config::Config) -> () {
     let default = log::LevelFilter::Info;
     let log_level = match config.loglevel {
         Some(p) => {

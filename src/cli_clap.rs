@@ -32,7 +32,7 @@ fn log_setup(matches: &ArgMatches) -> Option<i8> {
     }
 }
 
-pub fn cli_clap() -> crate::config::config {
+pub fn cli_clap() -> crate::config::Config {
     let application = App::new(crate_name!())
         .about("Parses an input file to do awesome things")
         .version(crate_version!())
@@ -158,7 +158,7 @@ pub fn cli_clap() -> crate::config::config {
         },
         None => None,
     };
-    crate::config::config {
+    crate::config::Config {
         configfile,
         loglevel,
         xunit_local_globs,
