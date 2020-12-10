@@ -17,9 +17,7 @@ pub fn log_setup(config: &crate::config::Config) -> () {
                 log::LevelFilter::Info
             } else if p == 1 {
                 log::LevelFilter::Debug
-            } else if p == 2 {
-                log::LevelFilter::Trace
-            } else if p > 2 {
+            } else if p >= 2 {
                 log::LevelFilter::Trace
             } else {
                 default
