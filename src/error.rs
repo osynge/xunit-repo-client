@@ -1,13 +1,11 @@
-use glob::{GlobError, PatternError};
 use thiserror::Error;
-use xunit_repo_interface::{File, Xunit, XunitError};
 
 #[derive(Error, Debug)]
 pub enum LocalErr {
     #[error("glob parsing error")]
-    GlobErr(#[from] GlobError),
+    GlobErr(#[from] glob::GlobError),
     #[error("glob pattern error")]
-    GlobPatternErr(#[from] PatternError),
+    GlobPatternErr(#[from] glob::PatternError),
     #[error("io parsing error")]
     IoErr(#[from] std::io::Error),
     #[error("xml parsing error")]

@@ -1,4 +1,3 @@
-use crate::config;
 use clap::App;
 use clap::Arg;
 use clap::ArgMatches;
@@ -9,7 +8,7 @@ use std::convert::TryFrom;
 fn log_setup(matches: &ArgMatches) -> Option<i8> {
     /* 0 is silent higher number more verbose */
     match (&matches.value_of("verbose"), &matches.value_of("quiet")) {
-        (None, None) => return None,
+        (None, None) => None,
         (Some(_), None) => match i8::try_from(20) {
             Ok(p) => Some(p),
             Err(_) => Some(i8::MAX),

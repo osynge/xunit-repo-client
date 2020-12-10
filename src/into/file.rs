@@ -1,18 +1,13 @@
 use crate::error::LocalErr;
-use std::io::BufReader;
 use std::io::Read;
-use std::path::Path;
 use std::path::PathBuf;
 use std::result::Result;
-use thiserror::Error;
-use xunit_repo_interface::{File, Xunit};
-//use xunit_repo_interface::Xunit;
 
 pub fn try_into(path: PathBuf) -> Result<xunit_repo_interface::File, LocalErr> {
-    if path.exists() == false {
+    if !path.exists() {
         return Err(LocalErr::Unknown);
     }
-    if path.is_relative() == false {
+    if !path.is_relative() {
         return Err(LocalErr::Unknown);
     };
     let dir = path
@@ -34,7 +29,7 @@ pub fn try_into(path: PathBuf) -> Result<xunit_repo_interface::File, LocalErr> {
     let mut buf_reader = std::io::BufReader::new(file);
     let mut contents = String::new();
     buf_reader.read_to_string(&mut contents)?;
-    let content = Xunit::try_from_xml(&contents)?;
+    let content = xunit_repo_interface::Xunit::try_from_xml(&contents)?;
     let out = xunit_repo_interface::File {
         content: content,
         filename: filename,

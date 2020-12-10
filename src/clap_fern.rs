@@ -1,5 +1,4 @@
 use chrono;
-use clap::ArgMatches;
 use fern;
 use log;
 use std;
