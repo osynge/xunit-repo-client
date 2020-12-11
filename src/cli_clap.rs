@@ -120,13 +120,13 @@ pub fn cli_clap() -> crate::config::Config {
 
     let matches = application.get_matches();
     let loglevel = log_setup(&matches);
-    let xunit_local_globs: Vec<String> = match matches.values_of("xunit") {
-        Some(itr) => itr.into_iter().map(|x| String::from(x)).collect(),
-        None => vec![],
+    let xunit_local_globs = match matches.values_of("xunit") {
+        Some(itr) => Some(itr.into_iter().map(|x| String::from(x)).collect()),
+        None => None,
     };
-    let enviroment_keys: Vec<String> = match matches.values_of("enviroment_variable") {
-        Some(itr) => itr.into_iter().map(|x| String::from(x)).collect(),
-        None => vec![],
+    let enviroment_keys = match matches.values_of("enviroment_variable") {
+        Some(itr) => Some(itr.into_iter().map(|x| String::from(x)).collect()),
+        None => None,
     };
 
     let configfile = match matches.value_of("config") {
