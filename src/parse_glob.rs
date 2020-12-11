@@ -4,7 +4,7 @@ fn load_glob(glob_str: &str) -> Result<Vec<xunit_repo_interface::File>, crate::e
     let mut output = vec![];
     for path in glob(glob_str)? {
         let ding = path?;
-        let file = crate::into::file::try_into(ding)?;
+        let file = crate::into::file::try_into(&ding)?;
         output.push(file);
     }
     Ok(output)

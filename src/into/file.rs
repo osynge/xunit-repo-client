@@ -3,7 +3,7 @@ use std::io::Read;
 use std::path::PathBuf;
 use std::result::Result;
 
-pub fn try_into(path: PathBuf) -> Result<xunit_repo_interface::File, LocalErr> {
+pub fn try_into(path: &PathBuf) -> Result<xunit_repo_interface::File, LocalErr> {
     if !path.exists() {
         return Err(LocalErr::Unknown);
     }
