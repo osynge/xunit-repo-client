@@ -26,7 +26,11 @@ pub fn cli_env() -> crate::config::Config {
             out.server_host = Some(value.clone());
         }
         if "XRC_PORT".eq(&key) {
-            out.server_port = Some(value.parse().expect("Enviroment variable XRC_PORT is not an integer"));
+            out.server_port = Some(
+                value
+                    .parse()
+                    .expect("Enviroment variable XRC_PORT is not an integer"),
+            );
         }
     }
     out

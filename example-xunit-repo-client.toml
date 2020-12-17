@@ -1,0 +1,27 @@
+# loglevel
+# description: Sets the loging level
+# type: unsigned integer
+# default: 0
+# values: `-2` to `2`
+# description long: The logging value is higher for more verbose and lower to be quieter.
+
+loglevel = 0
+
+# xunit
+# description: sets the path to xunit.xml files
+# type: array of unix globs
+# description long: All paths must be relative to the current working directory.
+
+xunit = ["xunit*.xml"]
+
+enviroment_sk = "b9df8efa-0f0d-4895-8fc9-9d627b2143a6"
+enviroment_keys = ["BRANCH",
+    "COMMIT",
+    "OS_NAME",
+    "OS_VERSION",
+    "OS_FALVOR"]
+project_sk = "39ebea0f-01d4-4623-8b8e-656eb4dad9cd"
+project_identiifier = "git@github.com:osynge/xunit-repo-client.git"
+project_human_name = "xunit-repo-client"
+server_host = "192.168.0.1"
+server_port = 8080
