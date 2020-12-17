@@ -5,18 +5,18 @@ use clap::{crate_name, crate_version};
 
 use std::convert::TryFrom;
 
-fn log_setup(verbose_occurrences : u64, quiet_occurrences : u64 ) -> Option<i8> {
+fn log_setup(verbose_occurrences: u64, quiet_occurrences: u64) -> Option<i8> {
     if (0, 0) == (verbose_occurrences, quiet_occurrences) {
-        return None
+        return None;
     };
     let verbose = match i8::try_from(verbose_occurrences) {
-                Ok(p) => p,
-                Err(_) => i8::MAX,
-            };
+        Ok(p) => p,
+        Err(_) => i8::MAX,
+    };
     let quiet = match i8::try_from(quiet_occurrences) {
-                Ok(p) => p,
-                Err(_) => i8::MAX,
-            };
+        Ok(p) => p,
+        Err(_) => i8::MAX,
+    };
     Some(verbose.saturating_sub(quiet))
 }
 
@@ -108,7 +108,10 @@ pub fn cli_clap() -> crate::config::Config {
         );
 
     let matches = application.get_matches();
-    let loglevel = log_setup(matches.occurrences_of("verbose"), matches.occurrences_of("quiet") );
+    let loglevel = log_setup(
+        matches.occurrences_of("verbose"),
+        matches.occurrences_of("quiet"),
+    );
     let xunit_local_globs = match matches.values_of("xunit") {
         Some(itr) => Some(itr.into_iter().map(|x| String::from(x)).collect()),
         None => None,
