@@ -62,8 +62,7 @@ pub fn load_config_from_default_path() -> Result<config::Config, ()> {
     };
     if let Some(mut dirhome) = dirs::home_dir() {
         dirhome.push(".xunit-repo-client.toml");
-        if let Some(cfg_path_str ) = dirhome.to_str() {
-
+        if let Some(cfg_path_str) = dirhome.to_str() {
             let cfg_path = String::from(cfg_path_str);
             if let Ok(cfg) = load_config_from_path_string(&cfg_path) {
                 print!("cfg");
