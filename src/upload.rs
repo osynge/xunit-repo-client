@@ -6,5 +6,6 @@ pub fn upload(host: &String, port: &u32, payload : &xunit_repo_interface::Upload
         .json::<xunit_repo_interface::Upload>(&payload)
         .send();
     println!("{:#?}", resp);
+    println!("{:#?}", resp.unwrap().text());
     Ok(())
 }
