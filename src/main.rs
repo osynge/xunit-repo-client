@@ -1,6 +1,7 @@
 use std::path::Path;
 #[macro_use]
 extern crate log;
+mod assemble;
 mod clap_fern;
 mod cli_clap;
 mod cli_env;
@@ -17,9 +18,7 @@ fn run() -> i32 {
     let cfg_clap_env = cfg_clap.default(&cfg_env);
     let cfg_file = match &cfg_clap_env.configfile {
         Some(p) => match cli_toml::load_config_from_path_string(p) {
-            Ok(f) => {
-                f
-            }
+            Ok(f) => f,
             Err(f) => {
                 clap_fern::log_setup(&cfg_clap_env);
                 error!("{}", f);
@@ -33,11 +32,11 @@ fn run() -> i32 {
     };
     let cfg = cfg_clap_env.default(&cfg_file);
     clap_fern::log_setup(&cfg);
-    error!("config={:#?}", cfg);
-    let _output = parse_glob::load_globs(&cfg.xunit_local_globs.unwrap());
+    info!("config={:#?}", cfg);
+    let payload = assemble::gen_payload(&cfg).unwrap();
     let host = cfg.server_host.expect("Hostname not set");
     let port = cfg.server_port.expect("Port not set");
-    upload::upload(&host, &port);
+    upload::upload(&host, &port, &payload);
     0
 }
 
