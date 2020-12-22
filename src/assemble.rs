@@ -1,7 +1,7 @@
-use std::collections::HashMap;
-
-use crate::parse_glob;
 use crate::error::LocalErr;
+use crate::parse_glob;
+use std::collections::HashMap;
+use std::env;
 use xunit_repo_interface;
 
 fn gen_project(cfg: &crate::config::Config) -> xunit_repo_interface::Project {
@@ -24,13 +24,28 @@ fn gen_project(cfg: &crate::config::Config) -> xunit_repo_interface::Project {
     }
 }
 
-fn gen_enviroment(cfg: &crate::config::Config) -> xunit_repo_interface::Enviroment {
-    let sk = match cfg.project_identiifier.as_ref() {
+fn gen_enviroment(
+    cfg: &crate::config::Config,
+) -> Result<xunit_repo_interface::Enviroment, LocalErr> {
+    let sk = match cfg.enviroment_sk.as_ref() {
         Some(p) => Some(p.clone()),
         None => None,
     };
-    let key_value = HashMap::new();
-    xunit_repo_interface::Enviroment { sk, key_value }
+    let mut key_value = HashMap::new();
+    for key in cfg
+        .enviroment_keys
+        .as_ref()
+        .ok_or(LocalErr::EnviromentKeysNone)?
+    {
+        let value = match env::var(key) {
+            Ok(value) => value,
+            Err(e) => {
+                return Err(LocalErr::EnvErr(key.clone(), e));
+            }
+        };
+        key_value.insert(key.clone(), value);
+    }
+    Ok(xunit_repo_interface::Enviroment { sk, key_value })
 }
 
 fn gen_run(cfg: &crate::config::Config) -> xunit_repo_interface::Run {
@@ -50,14 +65,13 @@ fn gen_run(cfg: &crate::config::Config) -> xunit_repo_interface::Run {
 
 pub fn gen_payload(cfg: &crate::config::Config) -> Result<xunit_repo_interface::Upload, LocalErr> {
     let project = gen_project(cfg);
-    let enviroment = gen_enviroment(cfg);
+    let enviroment = gen_enviroment(cfg)?;
     let run = gen_run(cfg);
     let files = match cfg.xunit_local_globs.as_ref() {
         Some(f) => parse_glob::load_globs(f)?,
-        None => vec![]
-
+        None => vec![],
     };
-    Ok(xunit_repo_interface::Upload{
+    Ok(xunit_repo_interface::Upload {
         project,
         enviroment,
         run,

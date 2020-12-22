@@ -2,6 +2,10 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum LocalErr {
+    #[error("the key '{0:?}' had error '{1:?}'")]
+    EnvErr(String, std::env::VarError),
+    #[error("No enviroment keys set")]
+    EnviromentKeysNone,
     #[error("glob parsing error")]
     GlobErr(#[from] glob::GlobError),
     #[error("glob pattern error")]

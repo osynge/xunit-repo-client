@@ -33,7 +33,14 @@ fn run() -> i32 {
     let cfg = cfg_clap_env.default(&cfg_file);
     clap_fern::log_setup(&cfg);
     info!("config={:#?}", cfg);
-    let payload = assemble::gen_payload(&cfg).unwrap();
+
+    let payload = match assemble::gen_payload(&cfg) {
+        Ok(p) => p,
+        Err(fail) => {
+            error!("{}", fail);
+            return 7;
+        }
+    };
     let host = cfg.server_host.expect("Hostname not set");
     let port = cfg.server_port.expect("Port not set");
     upload::upload(&host, &port, &payload);
