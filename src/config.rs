@@ -8,6 +8,8 @@ pub struct Config {
     pub project_sk: Option<String>,
     pub project_identiifier: Option<String>,
     pub project_human_name: Option<String>,
+    pub run_identifier: Option<String>,
+    pub run_sk: Option<String>,
     pub server_host: Option<String>,
     pub server_port: Option<u32>,
 }
@@ -24,6 +26,8 @@ impl Config {
             project_sk: None,
             project_identiifier: None,
             project_human_name: None,
+            run_identifier: None,
+            run_sk: None,
             server_host: None,
             server_port: None,
         }
@@ -79,6 +83,18 @@ impl Config {
             Some(p) => Some(p.clone()),
             None => None,
         };
+        let run_identifier = match self
+            .run_identifier
+            .as_ref()
+            .or_else(|| src.run_identifier.as_ref())
+        {
+            Some(p) => Some(p.clone()),
+            None => None,
+        };
+        let run_sk = match self.run_sk.as_ref().or_else(|| src.run_sk.as_ref()) {
+            Some(p) => Some(p.clone()),
+            None => None,
+        };
         let server_host = match self
             .server_host
             .as_ref()
@@ -97,6 +113,8 @@ impl Config {
             project_sk,
             project_identiifier,
             project_human_name,
+            run_identifier,
+            run_sk,
             server_host,
             server_port,
         }
@@ -116,6 +134,8 @@ mod tests {
             project_sk: Some(String::from("project_sk")),
             project_identiifier: Some(String::from("project_identiifier")),
             project_human_name: Some(String::from("project_human_name")),
+            run_identifier: Some(String::from("run_identifier")),
+            run_sk: Some(String::from("run_sk")),
             server_host: Some(String::from("server_host")),
             server_port: Some(8080),
         }
@@ -130,6 +150,8 @@ mod tests {
             project_sk: Some(String::from("2")),
             project_identiifier: Some(String::from("2")),
             project_human_name: Some(String::from("2")),
+            run_identifier: Some(String::from("2")),
+            run_sk: Some(String::from("2")),
             server_host: Some(String::from("2")),
             server_port: Some(2),
         }

@@ -22,6 +22,12 @@ pub fn cli_env() -> crate::config::Config {
         if "XRC_PROJECT_NAME".eq(&key) {
             out.project_human_name = Some(value.clone());
         }
+        if "XRC_RUN_IDENTIFIER".eq(&key) {
+            out.run_identifier = Some(value.clone());
+        }
+        if "XRC_RUN_KEY".eq(&key) {
+            out.run_sk = Some(value.clone());
+        }
         if "XRC_HOST".eq(&key) {
             out.server_host = Some(value.clone());
         }

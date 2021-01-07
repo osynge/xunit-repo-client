@@ -87,6 +87,20 @@ pub fn cli_clap() -> crate::config::Config {
                 .takes_value(true),
         )
         .arg(
+            Arg::with_name("run-identifier")
+                .long("run-identiifier")
+                .value_name("RUN_IDENTIFIER")
+                .help("An identifier for the run such as jenkins build number")
+                .takes_value(true),
+        )
+        .arg(
+            Arg::with_name("run-key")
+                .long("run-key")
+                .value_name("RUN_KEY")
+                .help("The key for the run")
+                .takes_value(true),
+        )
+        .arg(
             Arg::with_name("host")
                 .long("host")
                 .value_name("SERVER")
@@ -138,6 +152,12 @@ pub fn cli_clap() -> crate::config::Config {
         Some(p) => Some(String::from(p)),
         None => None,
     };
+
+    let run_identifier = match matches.value_of("run-identifier") {
+        Some(p) => Some(String::from(p)),
+        None => None,
+    };
+
     let server_host = match matches.value_of("host") {
         Some(p) => Some(String::from(p)),
         None => None,
@@ -158,6 +178,8 @@ pub fn cli_clap() -> crate::config::Config {
         project_sk: None,
         project_identiifier,
         project_human_name,
+        run_identifier,
+        run_sk: None,
         server_host,
         server_port,
     }

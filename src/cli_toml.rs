@@ -30,6 +30,8 @@ impl Into<config::Config> for ConfigFile {
             project_sk: self.project_sk,
             project_identiifier: self.project_identiifier,
             project_human_name: self.project_human_name,
+            run_identifier: None,
+            run_sk: None,
             server_host: self.server_host,
             server_port: self.server_port,
         }

@@ -31,6 +31,7 @@ fn gen_enviroment(
         Some(p) => Some(p.clone()),
         None => None,
     };
+    let mut missingEnvKeys = Vec::new();
     let mut key_value = HashMap::new();
     for key in cfg
         .enviroment_keys
@@ -38,35 +39,44 @@ fn gen_enviroment(
         .ok_or(LocalErr::EnviromentKeysNone)?
     {
         let value = match env::var(key) {
-            Ok(value) => value,
+            Ok(value) => key_value.insert(key.clone(), value),
             Err(e) => {
+                missingEnvKeys.push(key.clone());
                 return Err(LocalErr::EnvErr(key.clone(), e));
             }
         };
-        key_value.insert(key.clone(), value);
+    }
+    if missingEnvKeys.len() > 0 {
+        return Err(LocalErr::EnviromentKeysMissing(missingEnvKeys));
     }
     Ok(xunit_repo_interface::Enviroment { sk, key_value })
 }
 
-fn gen_run(cfg: &crate::config::Config) -> xunit_repo_interface::Run {
-    let sk = match cfg.project_identiifier.as_ref() {
-        Some(p) => Some(p.clone()),
-        None => None,
-    };
-    let client_identifier = match cfg.project_identiifier.as_ref() {
-        Some(p) => Some(p.clone()),
-        None => None,
-    };
-    xunit_repo_interface::Run {
-        sk,
-        client_identifier,
+fn gen_run(cfg: &crate::config::Config) -> Result<xunit_repo_interface::Run, LocalErr> {
+    match (
+        cfg.run_sk.as_ref(),
+        cfg.run_identifier.as_ref(),
+    ) {
+        (Some(sk), Some(client_identifier)) => Ok(xunit_repo_interface::Run {
+            sk: Some(sk.clone()),
+            client_identifier: Some(client_identifier.clone()),
+        }),
+        (None, Some(client_identifier)) => Ok(xunit_repo_interface::Run {
+            sk: None,
+            client_identifier:Some(client_identifier.clone()),
+        }),
+        (Some(sk), None) => Ok(xunit_repo_interface::Run {
+            sk: Some(sk.clone()),
+            client_identifier: None,
+        }),
+        (None, None) => Err(LocalErr::NoRunIdentifier),
     }
 }
 
 pub fn gen_payload(cfg: &crate::config::Config) -> Result<xunit_repo_interface::Upload, LocalErr> {
     let project = gen_project(cfg);
     let enviroment = gen_enviroment(cfg)?;
-    let run = gen_run(cfg);
+    let run = gen_run(cfg)?;
     let files = match cfg.xunit_local_globs.as_ref() {
         Some(f) => parse_glob::load_globs(f)?,
         None => vec![],
