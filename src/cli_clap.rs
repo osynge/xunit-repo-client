@@ -40,11 +40,11 @@ pub fn cli_clap() -> crate::config::Config {
                 .long("quiet"),
         )
         .arg(
-            Arg::with_name("enviroment_variable")
+            Arg::with_name("environment_variable")
                 .short("e")
                 .long("env")
                 .value_name("ENVIROMENT_VARIABLE")
-                .help("Which enviroment variables to process")
+                .help("Which environment variables to process")
                 .multiple(true)
                 .takes_value(true),
         )
@@ -65,8 +65,8 @@ pub fn cli_clap() -> crate::config::Config {
                 .takes_value(true),
         )
         .arg(
-            Arg::with_name("enviroment-key")
-                .long("enviroment-id")
+            Arg::with_name("environment-key")
+                .long("environment-id")
                 .value_name("ENV_ID")
                 .help("directory storing jobs shell scripts.")
                 .multiple(true)
@@ -130,7 +130,7 @@ pub fn cli_clap() -> crate::config::Config {
         Some(itr) => Some(itr.into_iter().map(|x| String::from(x)).collect()),
         None => None,
     };
-    let enviroment_keys = match matches.values_of("enviroment_variable") {
+    let environment_keys = match matches.values_of("environment_variable") {
         Some(itr) => Some(itr.into_iter().map(|x| String::from(x)).collect()),
         None => None,
     };
@@ -139,7 +139,7 @@ pub fn cli_clap() -> crate::config::Config {
         Some(p) => Some(String::from(p)),
         None => None,
     };
-    let enviroment_sk = match matches.value_of("enviroment-key") {
+    let environment_sk = match matches.value_of("environment-key") {
         Some(p) => Some(String::from(p)),
         None => None,
     };
@@ -173,8 +173,8 @@ pub fn cli_clap() -> crate::config::Config {
         configfile,
         loglevel,
         xunit_local_globs,
-        enviroment_sk,
-        enviroment_keys,
+        environment_sk,
+        environment_keys,
         project_sk: None,
         project_identiifier,
         project_human_name,

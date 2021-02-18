@@ -3,8 +3,8 @@ pub struct Config {
     pub configfile: Option<String>,
     pub loglevel: Option<i8>,
     pub xunit_local_globs: Option<Vec<String>>,
-    pub enviroment_sk: Option<String>,
-    pub enviroment_keys: Option<Vec<String>>,
+    pub environment_sk: Option<String>,
+    pub environment_keys: Option<Vec<String>>,
     pub project_sk: Option<String>,
     pub project_identiifier: Option<String>,
     pub project_human_name: Option<String>,
@@ -21,8 +21,8 @@ impl Config {
             configfile: None,
             loglevel: None,
             xunit_local_globs: None,
-            enviroment_sk: None,
-            enviroment_keys: None,
+            environment_sk: None,
+            environment_keys: None,
             project_sk: None,
             project_identiifier: None,
             project_human_name: None,
@@ -46,18 +46,18 @@ impl Config {
             Some(p) => Some(p.clone()),
             None => None,
         };
-        let enviroment_sk = match self
-            .enviroment_sk
+        let environment_sk = match self
+            .environment_sk
             .as_ref()
-            .or_else(|| src.enviroment_sk.as_ref())
+            .or_else(|| src.environment_sk.as_ref())
         {
             Some(p) => Some(p.clone()),
             None => None,
         };
-        let enviroment_keys = match self
-            .enviroment_keys
+        let environment_keys = match self
+            .environment_keys
             .as_ref()
-            .or_else(|| src.enviroment_keys.as_ref())
+            .or_else(|| src.environment_keys.as_ref())
         {
             Some(p) => Some(p.clone()),
             None => None,
@@ -108,8 +108,8 @@ impl Config {
             configfile,
             loglevel,
             xunit_local_globs,
-            enviroment_sk,
-            enviroment_keys,
+            environment_sk,
+            environment_keys,
             project_sk,
             project_identiifier,
             project_human_name,
@@ -129,8 +129,8 @@ mod tests {
             configfile: Some(String::from("configfile")),
             loglevel: Some(1),
             xunit_local_globs: Some(vec![String::from("xunit_local_globs")]),
-            enviroment_sk: Some(String::from("enviroment_sk")),
-            enviroment_keys: Some(vec![String::from("enviroment_keys")]),
+            environment_sk: Some(String::from("environment_sk")),
+            environment_keys: Some(vec![String::from("environment_keys")]),
             project_sk: Some(String::from("project_sk")),
             project_identiifier: Some(String::from("project_identiifier")),
             project_human_name: Some(String::from("project_human_name")),
@@ -145,8 +145,8 @@ mod tests {
             configfile: Some(String::from("2")),
             loglevel: Some(1),
             xunit_local_globs: Some(vec![String::from("2")]),
-            enviroment_sk: Some(String::from("2")),
-            enviroment_keys: Some(vec![String::from("2")]),
+            environment_sk: Some(String::from("2")),
+            environment_keys: Some(vec![String::from("2")]),
             project_sk: Some(String::from("2")),
             project_identiifier: Some(String::from("2")),
             project_human_name: Some(String::from("2")),

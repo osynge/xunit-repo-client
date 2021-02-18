@@ -8,10 +8,10 @@ pub fn cli_env() -> crate::config::Config {
             out.xunit_local_globs = Some(vec![value.clone()]);
         }
         if "XRC_ENVIROMENT_KEY".eq(&key) {
-            out.enviroment_sk = Some(value.clone());
+            out.environment_sk = Some(value.clone());
         }
         if "XRC_ENVIROMENT".eq(&key) {
-            out.enviroment_keys = Some(vec![value.clone().split(":").collect()]);
+            out.environment_keys = Some(vec![value.clone().split(":").collect()]);
         }
         if "XRC_PROJECT_KEY".eq(&key) {
             out.project_sk = Some(value.clone());
@@ -35,7 +35,7 @@ pub fn cli_env() -> crate::config::Config {
             out.server_port = Some(
                 value
                     .parse()
-                    .expect("Enviroment variable XRC_PORT is not an integer"),
+                    .expect("Environment variable XRC_PORT is not an integer"),
             );
         }
     }

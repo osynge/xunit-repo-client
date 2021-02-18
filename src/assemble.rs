@@ -24,19 +24,19 @@ fn gen_project(cfg: &crate::config::Config) -> xunit_repo_interface::Project {
     }
 }
 
-fn gen_enviroment(
+fn gen_environment(
     cfg: &crate::config::Config,
-) -> Result<xunit_repo_interface::Enviroment, LocalErr> {
-    let sk = match cfg.enviroment_sk.as_ref() {
+) -> Result<xunit_repo_interface::Environment, LocalErr> {
+    let sk = match cfg.environment_sk.as_ref() {
         Some(p) => Some(p.clone()),
         None => None,
     };
     let mut missingEnvKeys = Vec::new();
     let mut key_value = HashMap::new();
     for key in cfg
-        .enviroment_keys
+        .environment_keys
         .as_ref()
-        .ok_or(LocalErr::EnviromentKeysNone)?
+        .ok_or(LocalErr::EnvironmentKeysNone)?
     {
         let value = match env::var(key) {
             Ok(value) => key_value.insert(key.clone(), value),
@@ -47,9 +47,9 @@ fn gen_enviroment(
         };
     }
     if missingEnvKeys.len() > 0 {
-        return Err(LocalErr::EnviromentKeysMissing(missingEnvKeys));
+        return Err(LocalErr::EnvironmentKeysMissing(missingEnvKeys));
     }
-    Ok(xunit_repo_interface::Enviroment { sk, key_value })
+    Ok(xunit_repo_interface::Environment { sk, key_value })
 }
 
 fn gen_run(cfg: &crate::config::Config) -> Result<xunit_repo_interface::Run, LocalErr> {
@@ -75,7 +75,7 @@ fn gen_run(cfg: &crate::config::Config) -> Result<xunit_repo_interface::Run, Loc
 
 pub fn gen_payload(cfg: &crate::config::Config) -> Result<xunit_repo_interface::Upload, LocalErr> {
     let project = gen_project(cfg);
-    let enviroment = gen_enviroment(cfg)?;
+    let environment = gen_environment(cfg)?;
     let run = gen_run(cfg)?;
     let files = match cfg.xunit_local_globs.as_ref() {
         Some(f) => parse_glob::load_globs(f)?,
@@ -83,7 +83,7 @@ pub fn gen_payload(cfg: &crate::config::Config) -> Result<xunit_repo_interface::
     };
     Ok(xunit_repo_interface::Upload {
         project,
-        enviroment,
+        environment,
         run,
         files,
     })
