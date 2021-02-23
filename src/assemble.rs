@@ -13,14 +13,14 @@ fn gen_project(cfg: &crate::config::Config) -> xunit_repo_interface::Project {
         Some(p) => Some(p.clone()),
         None => None,
     };
-    let identiifier = match cfg.project_identiifier.as_ref() {
+    let identifier = match cfg.project_identifier.as_ref() {
         Some(p) => Some(p.clone()),
         None => None,
     };
     xunit_repo_interface::Project {
         sk,
         human_name,
-        identiifier,
+        identifier,
     }
 }
 

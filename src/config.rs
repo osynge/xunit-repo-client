@@ -6,7 +6,7 @@ pub struct Config {
     pub environment_sk: Option<String>,
     pub environment_keys: Option<Vec<String>>,
     pub project_sk: Option<String>,
-    pub project_identiifier: Option<String>,
+    pub project_identifier: Option<String>,
     pub project_human_name: Option<String>,
     pub run_identifier: Option<String>,
     pub run_sk: Option<String>,
@@ -24,7 +24,7 @@ impl Config {
             environment_sk: None,
             environment_keys: None,
             project_sk: None,
-            project_identiifier: None,
+            project_identifier: None,
             project_human_name: None,
             run_identifier: None,
             run_sk: None,
@@ -66,10 +66,10 @@ impl Config {
             Some(p) => Some(p.clone()),
             None => None,
         };
-        let project_identiifier = match self
-            .project_identiifier
+        let project_identifier = match self
+            .project_identifier
             .as_ref()
-            .or_else(|| src.project_identiifier.as_ref())
+            .or_else(|| src.project_identifier.as_ref())
         {
             Some(p) => Some(p.clone()),
             None => None,
@@ -111,7 +111,7 @@ impl Config {
             environment_sk,
             environment_keys,
             project_sk,
-            project_identiifier,
+            project_identifier,
             project_human_name,
             run_identifier,
             run_sk,
@@ -132,7 +132,7 @@ mod tests {
             environment_sk: Some(String::from("environment_sk")),
             environment_keys: Some(vec![String::from("environment_keys")]),
             project_sk: Some(String::from("project_sk")),
-            project_identiifier: Some(String::from("project_identiifier")),
+            project_identifier: Some(String::from("project_identifier")),
             project_human_name: Some(String::from("project_human_name")),
             run_identifier: Some(String::from("run_identifier")),
             run_sk: Some(String::from("run_sk")),
@@ -148,7 +148,7 @@ mod tests {
             environment_sk: Some(String::from("2")),
             environment_keys: Some(vec![String::from("2")]),
             project_sk: Some(String::from("2")),
-            project_identiifier: Some(String::from("2")),
+            project_identifier: Some(String::from("2")),
             project_human_name: Some(String::from("2")),
             run_identifier: Some(String::from("2")),
             run_sk: Some(String::from("2")),

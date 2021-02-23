@@ -74,7 +74,7 @@ pub fn cli_clap() -> crate::config::Config {
         )
         .arg(
             Arg::with_name("project-identifier")
-                .long("project-identiifier")
+                .long("project-identifier")
                 .value_name("PROJECT_IDENTIFIER")
                 .help("An identifier for the project such as VCS checkout url")
                 .takes_value(true),
@@ -88,7 +88,7 @@ pub fn cli_clap() -> crate::config::Config {
         )
         .arg(
             Arg::with_name("run-identifier")
-                .long("run-identiifier")
+                .long("run-identifier")
                 .value_name("RUN_IDENTIFIER")
                 .help("An identifier for the run such as jenkins build number")
                 .takes_value(true),
@@ -143,7 +143,7 @@ pub fn cli_clap() -> crate::config::Config {
         Some(p) => Some(String::from(p)),
         None => None,
     };
-    let project_identiifier = match matches.value_of("project-identifier") {
+    let project_identifier = match matches.value_of("project-identifier") {
         Some(p) => Some(String::from(p)),
         None => None,
     };
@@ -176,7 +176,7 @@ pub fn cli_clap() -> crate::config::Config {
         environment_sk,
         environment_keys,
         project_sk: None,
-        project_identiifier,
+        project_identifier,
         project_human_name,
         run_identifier,
         run_sk: None,

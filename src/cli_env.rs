@@ -5,19 +5,19 @@ pub fn cli_env() -> crate::config::Config {
             out.configfile = Some(value.clone());
         }
         if "XRC_XUNIT".eq(&key) {
-            out.xunit_local_globs = Some(vec![value.clone()]);
+            out.xunit_local_globs = Some(value.clone().split(":").into_iter().map(|item| String::from(item) ).collect());
         }
         if "XRC_ENVIROMENT_KEY".eq(&key) {
             out.environment_sk = Some(value.clone());
         }
         if "XRC_ENVIROMENT".eq(&key) {
-            out.environment_keys = Some(vec![value.clone().split(":").collect()]);
+            out.environment_keys = Some(value.clone().split(":").into_iter().map(|item| String::from(item) ).collect());
         }
         if "XRC_PROJECT_KEY".eq(&key) {
             out.project_sk = Some(value.clone());
         }
         if "XRC_PROJECT_IDENTIFIER".eq(&key) {
-            out.project_identiifier = Some(value.clone());
+            out.project_identifier = Some(value.clone());
         }
         if "XRC_PROJECT_NAME".eq(&key) {
             out.project_human_name = Some(value.clone());
