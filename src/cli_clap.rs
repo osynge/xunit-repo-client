@@ -1,6 +1,5 @@
 use clap::App;
 use clap::Arg;
-use clap::ArgMatches;
 use clap::{crate_name, crate_version};
 
 use std::convert::TryFrom;

@@ -32,7 +32,7 @@ impl Config {
             server_port: None,
         }
     }
-    pub fn default(&self, src: &Config) -> Config {
+    pub fn copy_with_default(&self, src: &Config) -> Config {
         let configfile = match self.configfile.as_ref().or_else(|| src.configfile.as_ref()) {
             Some(p) => Some(p.clone()),
             None => None,
@@ -161,7 +161,7 @@ mod tests {
     fn gets_default_with_none() {
         let a = gen_config_with_data_1();
         let b = Config::new();
-        let c = b.default(&a);
+        let c = b.copy_with_default(&a);
         assert_eq!(c, a);
     }
 
@@ -169,7 +169,7 @@ mod tests {
     fn gets_none_with_none() {
         let a = Config::new();
         let b = Config::new();
-        let c = b.default(&a);
+        let c = b.copy_with_default(&a);
         assert_eq!(c, a);
     }
 
@@ -177,7 +177,7 @@ mod tests {
     fn gets_original_with_none() {
         let a = gen_config_with_data_1();
         let b = Config::new();
-        let c = a.default(&b);
+        let c = a.copy_with_default(&b);
         assert_eq!(c, a);
     }
 
@@ -185,7 +185,7 @@ mod tests {
     fn gets_original_with_some() {
         let a = gen_config_with_data_1();
         let b = gen_config_with_data_2();
-        let c = a.default(&b);
+        let c = a.copy_with_default(&b);
         assert_eq!(c, a);
     }
 }

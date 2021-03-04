@@ -1,7 +1,5 @@
 use crate::config;
-use dirs::home_dir;
 use serde_derive::Deserialize;
-use std::io::{BufRead, BufReader};
 use std::path::Path;
 use thiserror::Error;
 use toml;

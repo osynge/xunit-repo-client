@@ -1,4 +1,3 @@
-use std::path::Path;
 #[macro_use]
 extern crate log;
 mod assemble;
@@ -15,7 +14,7 @@ mod upload;
 fn run() -> i32 {
     let cfg_clap = cli_clap::cli_clap();
     let cfg_env = cli_env::cli_env();
-    let cfg_clap_env = cfg_clap.default(&cfg_env);
+    let cfg_clap_env = cfg_clap.copy_with_default(&cfg_env);
     let cfg_file = match &cfg_clap_env.configfile {
         Some(p) => match cli_toml::load_config_from_path_string(p) {
             Ok(f) => f,
@@ -30,7 +29,7 @@ fn run() -> i32 {
             Err(f) => config::Config::new(),
         },
     };
-    let cfg = cfg_clap_env.default(&cfg_file);
+    let cfg = cfg_clap_env.copy_with_default(&cfg_file);
     clap_fern::log_setup(&cfg);
     info!("config={:#?}", cfg);
 
