@@ -1,6 +1,11 @@
+mod clap;
+mod environment;
+mod toml;
+use thiserror::Error;
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct Config {
-    pub configfile: Option<String>,
+    pub config_file: Option<String>,
     pub loglevel: Option<i8>,
     pub xunit_local_globs: Option<Vec<String>>,
     pub environment_sk: Option<String>,
@@ -14,11 +19,13 @@ pub struct Config {
     pub server_port: Option<u32>,
 }
 
+
+
 impl Config {
     //set the method's context
     pub fn new() -> Config {
         Config {
-            configfile: None,
+            config_file: None,
             loglevel: None,
             xunit_local_globs: None,
             environment_sk: None,
@@ -33,7 +40,7 @@ impl Config {
         }
     }
     pub fn copy_with_default(&self, src: &Config) -> Config {
-        let configfile = match self.configfile.as_ref().or_else(|| src.configfile.as_ref()) {
+        let config_file = match self.config_file.as_ref().or_else(|| src.config_file.as_ref()) {
             Some(p) => Some(p.clone()),
             None => None,
         };
@@ -105,7 +112,7 @@ impl Config {
         };
         let server_port = self.server_port.or_else(|| src.server_port);
         Config {
-            configfile,
+            config_file,
             loglevel,
             xunit_local_globs,
             environment_sk,
@@ -119,6 +126,34 @@ impl Config {
             server_port,
         }
     }
+}
+
+
+#[derive(Error, Debug)]
+pub(crate) enum ConfigureErr {
+    #[error("File not found '{0}'.")]
+    TomlErr(#[from] toml::toml::de::Error),
+    #[error("io parsing error")]
+    IoErr(#[from] std::io::Error),
+    #[error("File not found '{0}'.")]
+    FilePathIsNotFile(String),
+}
+
+pub(crate) fn configure() -> Result<Config, ConfigureErr> {
+    let cfg_clap = clap::cli_clap();
+    let cfg_env = environment::cli_env();
+    let cfg_clap_env = cfg_clap.copy_with_default(&cfg_env);
+    let cfg_file = match &cfg_clap_env.config_file {
+        Some(p) => toml::load_config_from_path_string(p)?,
+        None => match toml::load_config_from_default_path() {
+            Ok(f) => f,
+            Err(f) => Config::new(),
+        },
+    };
+    let cfg = cfg_clap_env.copy_with_default(&cfg_file);
+    /*clap_fern::log_setup(&cfg);
+    info!("config={:#?}", cfg);*/
+    Ok(cfg)
 }
 
 #[cfg(test)]

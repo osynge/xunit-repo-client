@@ -1,17 +1,32 @@
-pub fn cli_env() -> crate::config::Config {
-    let mut out = crate::config::Config::new();
+
+pub fn cli_env() -> crate::configuration::Config {
+    let mut out = crate::configuration::Config::new();
     for (key, value) in std::env::vars() {
         if "XRC_CONFIG".eq(&key) {
-            out.configfile = Some(value.clone());
+            out.config_file = Some(value.clone());
         }
         if "XRC_XUNIT".eq(&key) {
-            out.xunit_local_globs = Some(value.clone().split(":").into_iter().map(|item| String::from(item) ).collect());
+            out.xunit_local_globs = Some(
+                value
+                    .clone()
+                    .split(":")
+                    .into_iter()
+                    .map(|item| String::from(item))
+                    .collect(),
+            );
         }
         if "XRC_ENVIROMENT_KEY".eq(&key) {
             out.environment_sk = Some(value.clone());
         }
         if "XRC_ENVIROMENT".eq(&key) {
-            out.environment_keys = Some(value.clone().split(":").into_iter().map(|item| String::from(item) ).collect());
+            out.environment_keys = Some(
+                value
+                    .clone()
+                    .split(":")
+                    .into_iter()
+                    .map(|item| String::from(item))
+                    .collect(),
+            );
         }
         if "XRC_PROJECT_KEY".eq(&key) {
             out.project_sk = Some(value.clone());

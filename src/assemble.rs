@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use std::env;
 use xunit_repo_interface;
 
-fn gen_project(cfg: &crate::config::Config) -> xunit_repo_interface::Project {
+fn gen_project(cfg: &crate::configuration::Config) -> xunit_repo_interface::Project {
     let sk = match cfg.project_sk.as_ref() {
         Some(p) => Some(p.clone()),
         None => None,
@@ -25,7 +25,7 @@ fn gen_project(cfg: &crate::config::Config) -> xunit_repo_interface::Project {
 }
 
 fn gen_environment(
-    cfg: &crate::config::Config,
+    cfg: &crate::configuration::Config,
 ) -> Result<xunit_repo_interface::Environment, LocalErr> {
     let sk = match cfg.environment_sk.as_ref() {
         Some(p) => Some(p.clone()),
@@ -52,18 +52,15 @@ fn gen_environment(
     Ok(xunit_repo_interface::Environment { sk, key_value })
 }
 
-fn gen_run(cfg: &crate::config::Config) -> Result<xunit_repo_interface::Run, LocalErr> {
-    match (
-        cfg.run_sk.as_ref(),
-        cfg.run_identifier.as_ref(),
-    ) {
+fn gen_run(cfg: &crate::configuration::Config) -> Result<xunit_repo_interface::Run, LocalErr> {
+    match (cfg.run_sk.as_ref(), cfg.run_identifier.as_ref()) {
         (Some(sk), Some(client_identifier)) => Ok(xunit_repo_interface::Run {
             sk: Some(sk.clone()),
             client_identifier: Some(client_identifier.clone()),
         }),
         (None, Some(client_identifier)) => Ok(xunit_repo_interface::Run {
             sk: None,
-            client_identifier:Some(client_identifier.clone()),
+            client_identifier: Some(client_identifier.clone()),
         }),
         (Some(sk), None) => Ok(xunit_repo_interface::Run {
             sk: Some(sk.clone()),
@@ -73,7 +70,7 @@ fn gen_run(cfg: &crate::config::Config) -> Result<xunit_repo_interface::Run, Loc
     }
 }
 
-pub fn gen_payload(cfg: &crate::config::Config) -> Result<xunit_repo_interface::Upload, LocalErr> {
+pub fn gen_payload(cfg: &crate::configuration::Config) -> Result<xunit_repo_interface::Upload, LocalErr> {
     let project = gen_project(cfg);
     let environment = gen_environment(cfg)?;
     let run = gen_run(cfg)?;

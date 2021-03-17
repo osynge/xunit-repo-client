@@ -19,7 +19,7 @@ fn log_setup(verbose_occurrences: u64, quiet_occurrences: u64) -> Option<i8> {
     Some(verbose.saturating_sub(quiet))
 }
 
-pub fn cli_clap() -> crate::config::Config {
+pub fn cli_clap() -> crate::configuration::Config {
     let application = App::new(crate_name!())
         .about("Parses an input file to do awesome things")
         .version(crate_version!())
@@ -134,7 +134,7 @@ pub fn cli_clap() -> crate::config::Config {
         None => None,
     };
 
-    let configfile = match matches.value_of("config") {
+    let config_file = match matches.value_of("config") {
         Some(p) => Some(String::from(p)),
         None => None,
     };
@@ -168,8 +168,8 @@ pub fn cli_clap() -> crate::config::Config {
         },
         None => None,
     };
-    crate::config::Config {
-        configfile,
+    crate::configuration::Config {
+        config_file,
         loglevel,
         xunit_local_globs,
         environment_sk,

@@ -1,8 +1,7 @@
-use crate::config;
+use crate::configuration;
 use serde_derive::Deserialize;
 use std::path::Path;
-use thiserror::Error;
-use toml;
+pub(super) use toml;
 
 #[derive(Deserialize)]
 pub struct ConfigFile {
@@ -17,10 +16,10 @@ pub struct ConfigFile {
     pub server_port: Option<u32>,
 }
 
-impl Into<config::Config> for ConfigFile {
-    fn into(self) -> config::Config {
-        config::Config {
-            configfile: None,
+impl Into<configuration::Config> for ConfigFile {
+    fn into(self) -> configuration::Config {
+        configuration::Config {
+            config_file: None,
             loglevel: self.loglevel,
             xunit_local_globs: self.xunit,
             environment_sk: self.environment_sk,
@@ -35,27 +34,18 @@ impl Into<config::Config> for ConfigFile {
         }
     }
 }
-#[derive(Error, Debug)]
-pub enum CliTomlErr {
-    #[error("File not found '{0}'.")]
-    TomlErr(#[from] toml::de::Error),
-    #[error("io parsing error")]
-    IoErr(#[from] std::io::Error),
-    #[error("File not found '{0}'.")]
-    FilePathIsNotFile(String),
-}
 
-pub fn load_config_from_path_string(input_path: &String) -> Result<config::Config, CliTomlErr> {
+pub(crate) fn load_config_from_path_string(input_path: &String) -> Result<configuration::Config, configuration::ConfigureErr> {
     let path = Path::new(input_path);
     if !path.is_file() {
-        return Err(CliTomlErr::FilePathIsNotFile(String::from(input_path)));
+        return Err(configuration::ConfigureErr::FilePathIsNotFile(String::from(input_path)));
     }
     let toml_str = std::fs::read_to_string(&path)?;
     let cf: ConfigFile = toml::from_str(&toml_str)?;
     Ok(cf.into())
 }
 
-pub fn load_config_from_default_path() -> Result<config::Config, ()> {
+pub fn load_config_from_default_path() -> Result<configuration::Config, ()> {
     let path = String::from("/etc/xunit-repo-client.toml");
     if let Ok(cfg) = load_config_from_path_string(&path) {
         return Ok(cfg);
