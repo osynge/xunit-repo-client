@@ -19,8 +19,6 @@ pub struct Config {
     pub server_port: Option<u32>,
 }
 
-
-
 impl Config {
     //set the method's context
     pub fn new() -> Config {
@@ -40,7 +38,11 @@ impl Config {
         }
     }
     pub fn copy_with_default(&self, src: &Config) -> Config {
-        let config_file = match self.config_file.as_ref().or_else(|| src.config_file.as_ref()) {
+        let config_file = match self
+            .config_file
+            .as_ref()
+            .or_else(|| src.config_file.as_ref())
+        {
             Some(p) => Some(p.clone()),
             None => None,
         };
@@ -127,7 +129,6 @@ impl Config {
         }
     }
 }
-
 
 #[derive(Error, Debug)]
 pub(crate) enum ConfigureErr {

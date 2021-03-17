@@ -1,4 +1,3 @@
-
 pub fn cli_env() -> crate::configuration::Config {
     let mut out = crate::configuration::Config::new();
     for (key, value) in std::env::vars() {

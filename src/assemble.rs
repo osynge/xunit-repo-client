@@ -70,7 +70,9 @@ fn gen_run(cfg: &crate::configuration::Config) -> Result<xunit_repo_interface::R
     }
 }
 
-pub fn gen_payload(cfg: &crate::configuration::Config) -> Result<xunit_repo_interface::Upload, LocalErr> {
+pub fn gen_payload(
+    cfg: &crate::configuration::Config,
+) -> Result<xunit_repo_interface::Upload, LocalErr> {
     let project = gen_project(cfg);
     let environment = gen_environment(cfg)?;
     let run = gen_run(cfg)?;

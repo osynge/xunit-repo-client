@@ -14,7 +14,7 @@ fn run() -> i32 {
         Err(e) => {
             println!("{:?}", e);
             return 2;
-        },
+        }
     };
     clap_fern::log_setup(&cfg);
     info!("config={:#?}", cfg);

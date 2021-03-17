@@ -35,10 +35,14 @@ impl Into<configuration::Config> for ConfigFile {
     }
 }
 
-pub(crate) fn load_config_from_path_string(input_path: &String) -> Result<configuration::Config, configuration::ConfigureErr> {
+pub(crate) fn load_config_from_path_string(
+    input_path: &String,
+) -> Result<configuration::Config, configuration::ConfigureErr> {
     let path = Path::new(input_path);
     if !path.is_file() {
-        return Err(configuration::ConfigureErr::FilePathIsNotFile(String::from(input_path)));
+        return Err(configuration::ConfigureErr::FilePathIsNotFile(
+            String::from(input_path),
+        ));
     }
     let toml_str = std::fs::read_to_string(&path)?;
     let cf: ConfigFile = toml::from_str(&toml_str)?;
