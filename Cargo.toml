@@ -19,3 +19,5 @@ toml = "*"
 serde = "*"
 serde_derive = "*"
 dirs = "*"
+# only for static compilation for minimal alpine docker builds
+libsqlite3-sys = { version = "*", features = ["bundled"], optional=true}
