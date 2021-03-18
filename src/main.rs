@@ -26,9 +26,8 @@ fn run() -> i32 {
             return 7;
         }
     };
-    let host = cfg.server_host.expect("Hostname not set");
-    let port = cfg.server_port.expect("Port not set");
-    upload::upload(&host, &port, &payload);
+    let url = cfg.service_url.expect("Service URL not set");
+    upload::upload(&url, &payload);
     0
 }
 

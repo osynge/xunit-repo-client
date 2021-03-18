@@ -12,7 +12,7 @@ thiserror = "*"
 xunit-repo-interface = { git = "https://github.com/osynge/xunit-repo-interface.git", branch = "main" }
 reqwest = { version = "0.10", features = ["blocking", "json"] }
 fern = "*"
-log = "*"
+log = "0.4"
 clap = "2"
 chrono = "*"
 toml = "*"

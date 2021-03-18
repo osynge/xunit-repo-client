@@ -42,15 +42,8 @@ pub fn cli_env() -> crate::configuration::Config {
         if "XRC_RUN_KEY".eq(&key) {
             out.run_sk = Some(value.clone());
         }
-        if "XRC_HOST".eq(&key) {
-            out.server_host = Some(value.clone());
-        }
-        if "XRC_PORT".eq(&key) {
-            out.server_port = Some(
-                value
-                    .parse()
-                    .expect("Environment variable XRC_PORT is not an integer"),
-            );
+        if "XRC_SERVICE_URL".eq(&key) {
+            out.service_url = Some(value.clone());
         }
     }
     out

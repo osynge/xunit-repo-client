@@ -15,8 +15,7 @@ pub struct Config {
     pub project_human_name: Option<String>,
     pub run_identifier: Option<String>,
     pub run_sk: Option<String>,
-    pub server_host: Option<String>,
-    pub server_port: Option<u32>,
+    pub service_url: Option<String>,
 }
 
 impl Config {
@@ -33,8 +32,7 @@ impl Config {
             project_human_name: None,
             run_identifier: None,
             run_sk: None,
-            server_host: None,
-            server_port: None,
+            service_url: None,
         }
     }
     pub fn copy_with_default(&self, src: &Config) -> Config {
@@ -104,15 +102,14 @@ impl Config {
             Some(p) => Some(p.clone()),
             None => None,
         };
-        let server_host = match self
-            .server_host
+        let service_url = match self
+            .service_url
             .as_ref()
-            .or_else(|| src.server_host.as_ref())
+            .or_else(|| src.service_url.as_ref())
         {
             Some(p) => Some(p.clone()),
             None => None,
         };
-        let server_port = self.server_port.or_else(|| src.server_port);
         Config {
             config_file,
             loglevel,
@@ -124,8 +121,7 @@ impl Config {
             project_human_name,
             run_identifier,
             run_sk,
-            server_host,
-            server_port,
+            service_url,
         }
     }
 }
@@ -172,7 +168,7 @@ mod tests {
             project_human_name: Some(String::from("project_human_name")),
             run_identifier: Some(String::from("run_identifier")),
             run_sk: Some(String::from("run_sk")),
-            server_host: Some(String::from("server_host")),
+            service_url: Some(String::from("service_url")),
             server_port: Some(8080),
         }
     }
@@ -188,7 +184,7 @@ mod tests {
             project_human_name: Some(String::from("2")),
             run_identifier: Some(String::from("2")),
             run_sk: Some(String::from("2")),
-            server_host: Some(String::from("2")),
+            service_url: Some(String::from("2")),
             server_port: Some(2),
         }
     }

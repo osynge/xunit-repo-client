@@ -25,10 +25,8 @@ export XRC_PROJECT_IDENTIFIER=`git config --get remote.origin.url`
 # Set Run Identifier
 export XRC_RUN_IDENTIFIER=`git rev-parse HEAD`
 
-# Set Server
-export XRC_HOST=127.0.0.1
-# Set Port
-export XRC_PORT=8888
+# Set Service URL
+export XRC_SERVICE_URL=http://127.0.0.1:8888
 # Glob Xunit files from tests and xml directories.
 export XRC_XUNIT=tests/xunit*.xml:xml/xunit*.xml
 
@@ -51,8 +49,7 @@ xunit-repo-client \
     --env PLATFORM_RELEASE \
     --project-identifier `git config --get remote.origin.url` \
     --run-identifier `git rev-parse HEAD` \
-    --host 127.0.0.1 \
-    --port 8888 \
+    --url http://127.0.0.1:8888 \
     --xunit tests/xunit*.xml \
     --xunit xml/xunit*.xml
 ```
@@ -61,8 +58,7 @@ xunit-repo-client \
 There are 4 type of confiuration.
 
 * Service connection.
-  * Service host
-  * Service port
+  * Service url
 * Test run configuration.
   * Run Identifier
   * Run Key
@@ -101,7 +97,4 @@ Project Identifier |String | XRC_PROJECT_IDENTIFIER | project_identiifier | proj
 Project Human Name | String | XRC_PROJECT_NAME | project_human_name | project-name
 Run Identifier | String | XRC_RUN_IDENTIFIER | |run-identifier
 Run Key | String | XRC_RUN_KEY | | run-key
-Service Host | String | XRC_HOST | server_host | host
-Service Port | Int | XRC_PORT | server_port | port
-
-
+Service Url | String | XRC_SERVICE_URL | service_url | url

@@ -12,8 +12,7 @@ pub struct ConfigFile {
     pub project_sk: Option<String>,
     pub project_identifier: Option<String>,
     pub project_human_name: Option<String>,
-    pub server_host: Option<String>,
-    pub server_port: Option<u32>,
+    pub service_url: Option<String>,
 }
 
 impl Into<configuration::Config> for ConfigFile {
@@ -29,8 +28,7 @@ impl Into<configuration::Config> for ConfigFile {
             project_human_name: self.project_human_name,
             run_identifier: None,
             run_sk: None,
-            server_host: self.server_host,
-            server_port: self.server_port,
+            service_url: self.service_url,
         }
     }
 }

@@ -100,17 +100,10 @@ pub fn cli_clap() -> crate::configuration::Config {
                 .takes_value(true),
         )
         .arg(
-            Arg::with_name("host")
-                .long("host")
-                .value_name("SERVER")
-                .help("Sets the host to upload the xunit to.")
-                .takes_value(true),
-        )
-        .arg(
-            Arg::with_name("port")
-                .long("port")
-                .value_name("PORT")
-                .help("Sets the host's port.")
+            Arg::with_name("service-url")
+                .long("url")
+                .value_name("SERVICE_URL")
+                .help("Sets the service url to upload the xunit to.")
                 .takes_value(true),
         )
         .arg(
@@ -157,15 +150,8 @@ pub fn cli_clap() -> crate::configuration::Config {
         None => None,
     };
 
-    let server_host = match matches.value_of("host") {
+    let service_url = match matches.value_of("service-url") {
         Some(p) => Some(String::from(p)),
-        None => None,
-    };
-    let server_port = match matches.value_of("port") {
-        Some(p) => match p.parse() {
-            Ok(f) => Some(f),
-            Err(_) => None,
-        },
         None => None,
     };
     crate::configuration::Config {
@@ -179,7 +165,6 @@ pub fn cli_clap() -> crate::configuration::Config {
         project_human_name,
         run_identifier,
         run_sk: None,
-        server_host,
-        server_port,
+        service_url,
     }
 }

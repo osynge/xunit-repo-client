@@ -1,9 +1,8 @@
 pub fn upload(
-    host: &String,
-    port: &u32,
+    url: &String,
     payload: &xunit_repo_interface::Upload,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    let url = format!("http://{host}:{port}/upload", host = host, port = port);
+    let url = format!("{url}/upload", url = url);
     let client = reqwest::blocking::Client::new();
     let resp = client
         .post(&url)
