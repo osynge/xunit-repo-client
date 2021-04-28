@@ -19,7 +19,7 @@ RUN addgroup -S $APP_USER \
     && adduser -S -g $APP_USER $APP_USER
 
 RUN apk update \
-    && apk add --no-cache ca-certificates tzdata \
+    && apk add --no-cache ca-certificates tzdata git\
     && rm -rf /var/cache/apk/*
 
 COPY --from=builder /app/xunit-repo-client/target/x86_64-unknown-linux-musl/release/xunit-repo-client /usr/bin/xunit-repo-client
