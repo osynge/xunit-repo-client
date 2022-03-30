@@ -1,9 +1,11 @@
 mod clap;
 mod environment;
 mod toml;
+use clone_with_default::CloneWithDefault;
+use clone_with_default_derive;
 use thiserror::Error;
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, CloneWithDefault)]
 pub struct Config {
     pub config_file: Option<String>,
     pub loglevel: Option<i8>,
@@ -35,95 +37,6 @@ impl Config {
             service_url: None,
         }
     }
-    pub fn copy_with_default(&self, src: &Config) -> Config {
-        let config_file = match self
-            .config_file
-            .as_ref()
-            .or_else(|| src.config_file.as_ref())
-        {
-            Some(p) => Some(p.clone()),
-            None => None,
-        };
-        let loglevel = self.loglevel.or_else(|| src.loglevel);
-        let xunit_local_globs = match self
-            .xunit_local_globs
-            .as_ref()
-            .or_else(|| src.xunit_local_globs.as_ref())
-        {
-            Some(p) => Some(p.clone()),
-            None => None,
-        };
-        let environment_sk = match self
-            .environment_sk
-            .as_ref()
-            .or_else(|| src.environment_sk.as_ref())
-        {
-            Some(p) => Some(p.clone()),
-            None => None,
-        };
-        let environment_keys = match self
-            .environment_keys
-            .as_ref()
-            .or_else(|| src.environment_keys.as_ref())
-        {
-            Some(p) => Some(p.clone()),
-            None => None,
-        };
-        let project_sk = match self.project_sk.as_ref().or_else(|| src.project_sk.as_ref()) {
-            Some(p) => Some(p.clone()),
-            None => None,
-        };
-        let project_identifier = match self
-            .project_identifier
-            .as_ref()
-            .or_else(|| src.project_identifier.as_ref())
-        {
-            Some(p) => Some(p.clone()),
-            None => None,
-        };
-
-        let project_human_name = match self
-            .project_human_name
-            .as_ref()
-            .or_else(|| src.project_human_name.as_ref())
-        {
-            Some(p) => Some(p.clone()),
-            None => None,
-        };
-        let run_identifier = match self
-            .run_identifier
-            .as_ref()
-            .or_else(|| src.run_identifier.as_ref())
-        {
-            Some(p) => Some(p.clone()),
-            None => None,
-        };
-        let run_sk = match self.run_sk.as_ref().or_else(|| src.run_sk.as_ref()) {
-            Some(p) => Some(p.clone()),
-            None => None,
-        };
-        let service_url = match self
-            .service_url
-            .as_ref()
-            .or_else(|| src.service_url.as_ref())
-        {
-            Some(p) => Some(p.clone()),
-            None => None,
-        };
-        Config {
-            config_file,
-            loglevel,
-            xunit_local_globs,
-            environment_sk,
-            environment_keys,
-            project_sk,
-            project_identifier,
-            project_human_name,
-            run_identifier,
-            run_sk,
-            service_url,
-        }
-    }
 }
 
 #[derive(Error, Debug)]
@@ -139,7 +52,7 @@ pub(crate) enum ConfigureErr {
 pub(crate) fn configure() -> Result<Config, ConfigureErr> {
     let cfg_clap = clap::cli_clap();
     let cfg_env = environment::cli_env();
-    let cfg_clap_env = cfg_clap.copy_with_default(&cfg_env);
+    let cfg_clap_env = cfg_clap.clone_with_default(&cfg_env);
     let cfg_file = match &cfg_clap_env.config_file {
         Some(p) => toml::load_config_from_path_string(p)?,
         None => match toml::load_config_from_default_path() {
@@ -147,9 +60,7 @@ pub(crate) fn configure() -> Result<Config, ConfigureErr> {
             Err(f) => Config::new(),
         },
     };
-    let cfg = cfg_clap_env.copy_with_default(&cfg_file);
-    /*clap_fern::log_setup(&cfg);
-    info!("config={:#?}", cfg);*/
+    let cfg = cfg_clap_env.clone_with_default(&cfg_file);
     Ok(cfg)
 }
 
@@ -158,7 +69,7 @@ mod tests {
     use super::*;
     fn gen_config_with_data_1() -> Config {
         Config {
-            configfile: Some(String::from("configfile")),
+            config_file: Some(String::from("configfile")),
             loglevel: Some(1),
             xunit_local_globs: Some(vec![String::from("xunit_local_globs")]),
             environment_sk: Some(String::from("environment_sk")),
@@ -169,12 +80,11 @@ mod tests {
             run_identifier: Some(String::from("run_identifier")),
             run_sk: Some(String::from("run_sk")),
             service_url: Some(String::from("service_url")),
-            server_port: Some(8080),
         }
     }
     fn gen_config_with_data_2() -> Config {
         Config {
-            configfile: Some(String::from("2")),
+            config_file: Some(String::from("2")),
             loglevel: Some(1),
             xunit_local_globs: Some(vec![String::from("2")]),
             environment_sk: Some(String::from("2")),
@@ -185,7 +95,6 @@ mod tests {
             run_identifier: Some(String::from("2")),
             run_sk: Some(String::from("2")),
             service_url: Some(String::from("2")),
-            server_port: Some(2),
         }
     }
 
@@ -193,7 +102,7 @@ mod tests {
     fn gets_default_with_none() {
         let a = gen_config_with_data_1();
         let b = Config::new();
-        let c = b.copy_with_default(&a);
+        let c = b.clone_with_default(&a);
         assert_eq!(c, a);
     }
 
@@ -201,7 +110,7 @@ mod tests {
     fn gets_none_with_none() {
         let a = Config::new();
         let b = Config::new();
-        let c = b.copy_with_default(&a);
+        let c = b.clone_with_default(&a);
         assert_eq!(c, a);
     }
 
@@ -209,7 +118,7 @@ mod tests {
     fn gets_original_with_none() {
         let a = gen_config_with_data_1();
         let b = Config::new();
-        let c = a.copy_with_default(&b);
+        let c = a.clone_with_default(&b);
         assert_eq!(c, a);
     }
 
@@ -217,7 +126,7 @@ mod tests {
     fn gets_original_with_some() {
         let a = gen_config_with_data_1();
         let b = gen_config_with_data_2();
-        let c = a.copy_with_default(&b);
+        let c = a.clone_with_default(&b);
         assert_eq!(c, a);
     }
 }

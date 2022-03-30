@@ -1,5 +1,9 @@
 #[macro_use]
 extern crate log;
+extern crate clone_with_default;
+#[macro_use]
+extern crate clone_with_default_derive;
+
 mod assemble;
 mod clap_fern;
 mod configuration;
