@@ -15,24 +15,6 @@ pub struct ConfigFile {
     pub service_url: Option<String>,
 }
 
-impl Into<configuration::Config> for ConfigFile {
-    fn into(self) -> configuration::Config {
-        configuration::Config {
-            config_file: None,
-            loglevel: self.loglevel,
-            xunit_local_globs: self.xunit,
-            environment_sk: self.environment_sk,
-            environment_keys: self.environment_keys,
-            project_sk: self.project_sk,
-            project_identifier: self.project_identifier,
-            project_human_name: self.project_human_name,
-            run_identifier: None,
-            run_sk: None,
-            service_url: self.service_url,
-        }
-    }
-}
-
 pub(crate) fn load_config_from_path_string(
     input_path: &String,
 ) -> Result<configuration::Config, configuration::ConfigureErr> {

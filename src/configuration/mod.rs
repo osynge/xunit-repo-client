@@ -2,7 +2,6 @@ mod clap;
 mod environment;
 mod toml;
 use clone_with_default::CloneWithDefault;
-use clone_with_default_derive;
 use thiserror::Error;
 
 #[derive(Debug, Clone, PartialEq, CloneWithDefault)]
@@ -35,6 +34,24 @@ impl Config {
             run_identifier: None,
             run_sk: None,
             service_url: None,
+        }
+    }
+}
+
+impl From<toml::ConfigFile> for Config {
+    fn from(src: toml::ConfigFile) -> Self {
+        Config {
+            config_file: None,
+            loglevel: src.loglevel,
+            xunit_local_globs: src.xunit,
+            environment_sk: src.environment_sk,
+            environment_keys: src.environment_keys,
+            project_sk: src.project_sk,
+            project_identifier: src.project_identifier,
+            project_human_name: src.project_human_name,
+            run_identifier: None,
+            run_sk: None,
+            service_url: src.service_url,
         }
     }
 }
