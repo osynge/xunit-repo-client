@@ -31,7 +31,7 @@ fn gen_environment(
         Some(p) => Some(p.clone()),
         None => None,
     };
-    let mut missingEnvKeys = Vec::new();
+    let mut missing_env_keys = Vec::new();
     let mut key_value = HashMap::new();
     for key in cfg
         .environment_keys
@@ -41,13 +41,13 @@ fn gen_environment(
         let value = match env::var(key) {
             Ok(value) => key_value.insert(key.clone(), value),
             Err(e) => {
-                missingEnvKeys.push(key.clone());
+                missing_env_keys.push(key.clone());
                 return Err(LocalErr::EnvErr(key.clone(), e));
             }
         };
     }
-    if missingEnvKeys.len() > 0 {
-        return Err(LocalErr::EnvironmentKeysMissing(missingEnvKeys));
+    if missing_env_keys.len() > 0 {
+        return Err(LocalErr::EnvironmentKeysMissing(missing_env_keys));
     }
     Ok(xunit_repo_interface::Environment { sk, key_value })
 }
