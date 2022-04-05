@@ -1,10 +1,10 @@
 mod clap;
 mod environment;
 mod toml;
-use clone_with_default::CloneWithDefault;
+use clone_or::CloneOr;
 use thiserror::Error;
 
-#[derive(Debug, Clone, PartialEq, CloneWithDefault)]
+#[derive(Debug, Clone, PartialEq, CloneOr)]
 pub struct Config {
     pub config_file: Option<String>,
     pub loglevel: Option<i8>,
@@ -69,7 +69,7 @@ pub(crate) enum ConfigureErr {
 pub(crate) fn configure() -> Result<Config, ConfigureErr> {
     let cfg_clap = clap::cli_clap();
     let cfg_env = environment::cli_env();
-    let cfg_clap_env = cfg_clap.clone_with_default(&cfg_env);
+    let cfg_clap_env = cfg_clap.clone_or(&cfg_env);
     let cfg_file = match &cfg_clap_env.config_file {
         Some(p) => toml::load_config_from_path_string(p)?,
         None => match toml::load_config_from_default_path() {
@@ -77,7 +77,7 @@ pub(crate) fn configure() -> Result<Config, ConfigureErr> {
             Err(f) => Config::new(),
         },
     };
-    let cfg = cfg_clap_env.clone_with_default(&cfg_file);
+    let cfg = cfg_clap_env.clone_or(&cfg_file);
     Ok(cfg)
 }
 
@@ -119,7 +119,7 @@ mod tests {
     fn gets_default_with_none() {
         let a = gen_config_with_data_1();
         let b = Config::new();
-        let c = b.clone_with_default(&a);
+        let c = b.clone_or(&a);
         assert_eq!(c, a);
     }
 
@@ -127,7 +127,7 @@ mod tests {
     fn gets_none_with_none() {
         let a = Config::new();
         let b = Config::new();
-        let c = b.clone_with_default(&a);
+        let c = b.clone_or(&a);
         assert_eq!(c, a);
     }
 
@@ -135,7 +135,7 @@ mod tests {
     fn gets_original_with_none() {
         let a = gen_config_with_data_1();
         let b = Config::new();
-        let c = a.clone_with_default(&b);
+        let c = a.clone_or(&b);
         assert_eq!(c, a);
     }
 
@@ -143,7 +143,7 @@ mod tests {
     fn gets_original_with_some() {
         let a = gen_config_with_data_1();
         let b = gen_config_with_data_2();
-        let c = a.clone_with_default(&b);
+        let c = a.clone_or(&b);
         assert_eq!(c, a);
     }
 }
