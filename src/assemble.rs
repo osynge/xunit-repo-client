@@ -38,7 +38,7 @@ fn gen_environment(
         .as_ref()
         .ok_or(LocalErr::EnvironmentKeysNone)?
     {
-        let value = match env::var(key) {
+        let _ = match env::var(key) {
             Ok(value) => key_value.insert(key.clone(), value),
             Err(e) => {
                 missing_env_keys.push(key.clone());
