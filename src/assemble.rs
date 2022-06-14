@@ -2,35 +2,19 @@ use crate::error::LocalErr;
 use crate::parse_glob;
 use std::collections::HashMap;
 use std::env;
-use xunit_repo_interface;
 
 fn gen_project(cfg: &crate::configuration::Config) -> xunit_repo_interface::Project {
-    let sk = match cfg.project_sk.as_ref() {
-        Some(p) => Some(p.clone()),
-        None => None,
-    };
-    let human_name = match cfg.project_human_name.as_ref() {
-        Some(p) => Some(p.clone()),
-        None => None,
-    };
-    let identifier = match cfg.project_identifier.as_ref() {
-        Some(p) => Some(p.clone()),
-        None => None,
-    };
     xunit_repo_interface::Project {
-        sk,
-        human_name,
-        identifier,
+        sk: cfg.project_sk.as_ref().cloned(),
+        human_name: cfg.project_human_name.as_ref().cloned(),
+        identifier: cfg.project_identifier.as_ref().cloned(),
     }
 }
 
 fn gen_environment(
     cfg: &crate::configuration::Config,
 ) -> Result<xunit_repo_interface::Environment, LocalErr> {
-    let sk = match cfg.environment_sk.as_ref() {
-        Some(p) => Some(p.clone()),
-        None => None,
-    };
+    let sk = cfg.environment_sk.as_ref().cloned();
     let mut missing_env_keys = Vec::new();
     let mut key_value = HashMap::new();
     for key in cfg
@@ -46,7 +30,7 @@ fn gen_environment(
             }
         };
     }
-    if missing_env_keys.len() > 0 {
+    if !missing_env_keys.is_empty() {
         return Err(LocalErr::EnvironmentKeysMissing(missing_env_keys));
     }
     Ok(xunit_repo_interface::Environment { sk, key_value })

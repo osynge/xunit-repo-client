@@ -118,42 +118,18 @@ pub fn cli_clap() -> crate::configuration::Config {
         matches.occurrences_of("verbose"),
         matches.occurrences_of("quiet"),
     );
-    let xunit_local_globs = match matches.values_of("xunit") {
-        Some(itr) => Some(itr.into_iter().map(|x| String::from(x)).collect()),
-        None => None,
-    };
-    let environment_keys = match matches.values_of("environment_variable") {
-        Some(itr) => Some(itr.into_iter().map(|x| String::from(x)).collect()),
-        None => None,
-    };
-
-    let config_file = match matches.value_of("config") {
-        Some(p) => Some(String::from(p)),
-        None => None,
-    };
-    let environment_sk = match matches.value_of("environment-key") {
-        Some(p) => Some(String::from(p)),
-        None => None,
-    };
-    let project_identifier = match matches.value_of("project-identifier") {
-        Some(p) => Some(String::from(p)),
-        None => None,
-    };
-
-    let project_human_name = match matches.value_of("project-name") {
-        Some(p) => Some(String::from(p)),
-        None => None,
-    };
-
-    let run_identifier = match matches.value_of("run-identifier") {
-        Some(p) => Some(String::from(p)),
-        None => None,
-    };
-
-    let service_url = match matches.value_of("service-url") {
-        Some(p) => Some(String::from(p)),
-        None => None,
-    };
+    let xunit_local_globs = matches
+        .values_of("xunit")
+        .map(|itr| itr.into_iter().map(String::from).collect());
+    let environment_keys = matches
+        .values_of("environment_variable")
+        .map(|itr| itr.into_iter().map(String::from).collect());
+    let config_file = matches.value_of("config").map(String::from);
+    let environment_sk = matches.value_of("environment-key").map(String::from);
+    let project_identifier = matches.value_of("project-identifier").map(String::from);
+    let project_human_name = matches.value_of("project-name").map(String::from);
+    let run_identifier = matches.value_of("run-identifier").map(String::from);
+    let service_url = matches.value_of("service-url").map(String::from);
     crate::configuration::Config {
         config_file,
         loglevel,

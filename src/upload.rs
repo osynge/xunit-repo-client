@@ -10,7 +10,7 @@ pub fn upload(
         .build()?;
     let resp = client
         .post(&url)
-        .json::<xunit_repo_interface::Upload>(&payload)
+        .json::<xunit_repo_interface::Upload>(payload)
         .send()?;
     println!("{:#?}", resp);
     let text = resp.text()?;

@@ -1,9 +1,4 @@
-use chrono;
-use fern;
-use log;
-use std;
-
-pub fn log_setup(config: &crate::configuration::Config) -> () {
+pub fn log_setup(config: &crate::configuration::Config) {
     let default = log::LevelFilter::Info;
     let log_level = match config.loglevel {
         Some(p) => {

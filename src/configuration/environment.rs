@@ -8,9 +8,9 @@ pub fn cli_env() -> crate::configuration::Config {
             out.xunit_local_globs = Some(
                 value
                     .clone()
-                    .split(":")
+                    .split(':')
                     .into_iter()
-                    .map(|item| String::from(item))
+                    .map(String::from)
                     .collect(),
             );
         }
@@ -21,9 +21,9 @@ pub fn cli_env() -> crate::configuration::Config {
             out.environment_keys = Some(
                 value
                     .clone()
-                    .split(":")
+                    .split(':')
                     .into_iter()
-                    .map(|item| String::from(item))
+                    .map(String::from)
                     .collect(),
             );
         }
