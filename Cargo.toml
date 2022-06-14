@@ -10,8 +10,7 @@ edition = "2021"
 glob = "*"
 thiserror = "*"
 xunit-repo-interface = { git = "https://github.com/osynge/xunit-repo-interface.git", branch = "main" }
-clone_or = { git = "https://github.com/osynge/clone-or.git", branch = "main" }
-clone_or_derive = { git = "https://github.com/osynge/clone-or.git", branch = "main" }
+converge = "*"
 reqwest = { version = "0.10", features = ["blocking", "json"] }
 fern = "*"
 log = "0.4"
