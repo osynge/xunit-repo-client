@@ -7,7 +7,7 @@ pub(crate) enum LocalErr {
     #[error("All is good.'")]
     Good,
     #[error("configuration")]
-    Config(#[from] crate::configuration::ConfigureErr),
+    Config(#[from] crate::configuration::errors::ConfigureErr),
     #[error("the key '{0:?}' had error '{1:?}'")]
     EnvErr(String, std::env::VarError),
     #[error("Environment keys missing '{0:?}'")]

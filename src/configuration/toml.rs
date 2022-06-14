@@ -1,7 +1,7 @@
-use crate::configuration;
+use crate::configuration::errors::ConfigureErr;
+use crate::configuration::Config;
 use serde_derive::Deserialize;
 use std::path::Path;
-pub(super) use toml;
 
 #[derive(Deserialize)]
 pub struct ConfigFile {
@@ -15,21 +15,17 @@ pub struct ConfigFile {
     pub service_url: Option<String>,
 }
 
-pub(crate) fn load_config_from_path_string(
-    input_path: &String,
-) -> Result<configuration::Config, configuration::ConfigureErr> {
+pub(crate) fn load_config_from_path_string(input_path: &String) -> Result<Config, ConfigureErr> {
     let path = Path::new(input_path);
     if !path.is_file() {
-        return Err(configuration::ConfigureErr::FilePathIsNotFile(
-            String::from(input_path),
-        ));
+        return Err(ConfigureErr::FilePathIsNotFile(String::from(input_path)));
     }
     let toml_str = std::fs::read_to_string(&path)?;
     let cf: ConfigFile = toml::from_str(&toml_str)?;
     Ok(cf.into())
 }
 
-pub fn load_config_from_default_path() -> Result<configuration::Config, ()> {
+pub fn load_config_from_default_path() -> Result<Config, ()> {
     let path = String::from("/etc/xunit-repo-client.toml");
     if let Ok(cfg) = load_config_from_path_string(&path) {
         return Ok(cfg);

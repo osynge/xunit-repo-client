@@ -1,8 +1,8 @@
 mod clap;
 mod environment;
+pub(super) mod errors;
 mod toml;
 use converge::Converge;
-use thiserror::Error;
 
 #[derive(Debug, Clone, PartialEq, Converge)]
 pub struct Config {
@@ -56,17 +56,7 @@ impl From<toml::ConfigFile> for Config {
     }
 }
 
-#[derive(Error, Debug)]
-pub(crate) enum ConfigureErr {
-    #[error("File not found '{0}'.")]
-    TomlErr(#[from] toml::toml::de::Error),
-    #[error("io parsing error")]
-    IoErr(#[from] std::io::Error),
-    #[error("File not found '{0}'.")]
-    FilePathIsNotFile(String),
-}
-
-pub(crate) fn configure() -> Result<Config, ConfigureErr> {
+pub(crate) fn configure() -> Result<Config, errors::ConfigureErr> {
     let cfg_clap = clap::cli_clap();
     let cfg_env = environment::cli_env();
     let cfg_clap_env = cfg_clap.converge(cfg_env);
