@@ -10,7 +10,7 @@ fn load_glob(glob_str: &str) -> Result<Vec<xunit_repo_interface::File>, crate::e
     Ok(output)
 }
 
-pub fn load_globs(
+pub(crate) fn load_globs(
     globs: &Vec<String>,
 ) -> Result<Vec<xunit_repo_interface::File>, crate::error::LocalErr> {
     let mut output = vec![];

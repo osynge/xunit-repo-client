@@ -11,13 +11,9 @@ pub fn upload(
     let resp = client
         .post(&url)
         .json::<xunit_repo_interface::Upload>(&payload)
-        .send();
+        .send()?;
     println!("{:#?}", resp);
-    let text = match resp {
-        Ok(p) => p.text(),
-        Err(_) => Ok(String::from("")),
-    };
+    let text = resp.text()?;
     println!("resp.text={:#?}", text);
-
     Ok(())
 }

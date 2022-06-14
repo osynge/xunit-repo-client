@@ -9,29 +9,22 @@ mod into;
 mod parse_glob;
 mod upload;
 
-fn run() -> i32 {
-    let cfg = match configuration::configure() {
-        Ok(p) => p,
-        Err(e) => {
-            println!("{:?}", e);
-            return 2;
-        }
-    };
+fn run() -> Result<(), error::LocalErr> {
+    let cfg = configuration::configure()?;
     clap_fern::log_setup(&cfg);
     info!("config={:#?}", cfg);
 
-    let payload = match assemble::gen_payload(&cfg) {
-        Ok(p) => p,
-        Err(fail) => {
-            error!("{}", fail);
-            return 7;
-        }
-    };
+    let payload = assemble::gen_payload(&cfg)?;
     let url = cfg.service_url.expect("Service URL not set");
-    upload::upload(&url, &payload);
-    0
+    if let Err(p) = upload::upload(&url, &payload) {
+        return Err(error::LocalErr::Upload(format!("{}", p)));
+    };
+    Ok(())
 }
 
-fn main() {
-    std::process::exit(run())
+fn main() -> error::LocalErr {
+    match run() {
+        Ok(_) => error::LocalErr::Good,
+        Err(p) => p,
+    }
 }
