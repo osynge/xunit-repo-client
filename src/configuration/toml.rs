@@ -39,7 +39,6 @@ pub fn load_config_from_default_path() -> Result<configuration::Config, ()> {
         if let Some(cfg_path_str) = dirhome.to_str() {
             let cfg_path = String::from(cfg_path_str);
             if let Ok(cfg) = load_config_from_path_string(&cfg_path) {
-                print!("cfg");
                 return Ok(cfg);
             };
         }
