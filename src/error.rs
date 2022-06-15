@@ -1,4 +1,4 @@
-use std::convert::Into;
+use std::convert::From;
 use std::process::{ExitCode, Termination};
 use thiserror::Error;
 
@@ -30,9 +30,9 @@ pub(crate) enum LocalErr {
     Unknown,
 }
 
-impl Into<u8> for LocalErr {
-    fn into(self) -> u8 {
-        match self {
+impl From<LocalErr> for u8 {
+    fn from(item: LocalErr) -> u8 {
+        match item {
             LocalErr::Good => 0,
             LocalErr::Config(_) => 1,
             LocalErr::EnvErr(_, _) => 5,
@@ -55,7 +55,6 @@ impl Termination for LocalErr {
             LocalErr::Good => {}
             _ => log::error!("{}", self),
         }
-        let ec: u8 = self.into();
-        ExitCode::from(ec)
+        ExitCode::from(u8::from(self))
     }
 }
