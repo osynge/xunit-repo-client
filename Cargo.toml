@@ -8,18 +8,18 @@ rust-version = "1.56"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-glob = "*"
-thiserror = "*"
+glob = "0.3"
+thiserror = "1"
 xunit-repo-interface = { git = "https://github.com/osynge/xunit-repo-interface.git", branch = "main" }
-converge = "*"
+converge = "0.0.4"
 reqwest = { version = "0.11", features = ["blocking", "json"] }
-fern = "*"
+fern = "0.6"
 log = "0.4"
 clap = { version = "4",  features = ["cargo"]}
-chrono = "*"
-toml = "*"
-serde = "*"
-serde_derive = "*"
-dirs = "*"
+chrono = "0.4"
+toml = "0.7"
+serde = "1"
+serde_derive = "1"
+dirs = "4"
 # only for static compilation for minimal alpine docker builds
 libsqlite3-sys = { version = "*", features = ["bundled"], optional=true}
