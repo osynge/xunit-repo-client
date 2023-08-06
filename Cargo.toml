@@ -20,6 +20,6 @@ chrono = "0.4"
 toml = "0.7"
 serde = "1"
 serde_derive = "1"
-dirs = "4"
+dirs = "5"
 # only for static compilation for minimal alpine docker builds
 libsqlite3-sys = { version = "*", features = ["bundled"], optional=true}
