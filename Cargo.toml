@@ -17,7 +17,7 @@ fern = "0.6"
 log = "0.4"
 clap = { version = "4",  features = ["cargo"]}
 chrono = "0.4"
-toml = "0.7"
+toml = "0.8"
 serde = "1"
 serde_derive = "1"
 dirs = "5"
